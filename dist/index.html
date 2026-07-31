@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>College Assistant AI</title>
+<meta name="description" content="College Assistant AI — your intelligent campus companion for admissions, courses, and contact information." />
+<meta name="theme-color" content="#0B0F1A" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <script type="module" crossorigin src="/college-assistant-ai/assets/index-BpzVSHw4.js"></script>
+  <link rel="stylesheet" crossorigin href="/college-assistant-ai/assets/index-D5cxun0m.css">
+</head>
+<body>
+
+<!-- ============ SKIP LINK (A11Y) ============ -->
+<a class="skip-link" href="#composer-input">Skip to message input</a>
+
+<!-- ============ ANIMATED BACKGROUND ============ -->
+<div class="bg-aurora" aria-hidden="true">
+  <span class="aurora aurora-1"></span>
+  <span class="aurora aurora-2"></span>
+  <span class="aurora aurora-3"></span>
+  <span class="bg-grain"></span>
+</div>
+
+<div class="app-shell" id="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar" aria-label="Conversation sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="orb" viewBox="0 0 48 48" fill="none">
+            <circle class="orb-ring orb-ring-1" cx="24" cy="24" r="20" />
+            <circle class="orb-ring orb-ring-2" cx="24" cy="24" r="14" />
+            <circle class="orb-core" cx="24" cy="24" r="6" />
+          </svg>
+        </span>
+        <div class="brand-text">
+          <strong>College Assistant</strong>
+          <span>AI</span>
+        </div>
+      </div>
+      <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <button class="btn-new-chat" id="newChatBtn">
+      <i data-lucide="plus" aria-hidden="true"></i>
+      <span>New chat</span>
+    </button>
+
+    <nav class="history-section" aria-label="Recent conversations">
+      <h2 class="history-label">Recent chats</h2>
+      <ul class="history-list" id="historyList">
+        <!-- populated by app.js -->
+        <li class="history-empty" id="historyEmpty">No conversations yet</li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="sidebar-action" id="themeToggleBtn" aria-label="Toggle color theme">
+        <i data-lucide="sun-moon" aria-hidden="true"></i>
+        <span>Theme</span>
+        <span class="theme-current" id="themeCurrentLabel">Auto</span>
+      </button>
+      <button class="sidebar-action" id="settingsBtn" aria-haspopup="dialog" aria-controls="settingsModal">
+        <i data-lucide="settings" aria-hidden="true"></i>
+        <span>Settings</span>
+      </button>
+      <button class="sidebar-action" id="aboutBtn" aria-haspopup="dialog" aria-controls="aboutModal">
+        <i data-lucide="info" aria-hidden="true"></i>
+        <span>About</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ SIDEBAR SCRIM (mobile) ============ -->
+  <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main" id="main">
+
+    <!-- Glass Topbar -->
+    <header class="topbar">
+      <button class="icon-btn sidebar-open" id="sidebarOpen" aria-label="Open sidebar" aria-expanded="false" aria-controls="sidebar">
+        <i data-lucide="panel-left" aria-hidden="true"></i>
+      </button>
+
+      <div class="topbar-title">
+        <span class="status-dot" id="connStatusDot" aria-hidden="true"></span>
+        <span id="connStatusText">Connecting…</span>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" id="exportBtn" aria-label="Export conversation" title="Export conversation">
+          <i data-lucide="download" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn" id="clearChatBtn" aria-label="Clear chat" title="Clear chat">
+          <i data-lucide="trash-2" aria-hidden="true"></i>
+        </button>
+        <button class="icon-btn theme-quick-toggle" id="themeQuickToggle" aria-label="Toggle dark mode">
+          <i data-lucide="moon" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ============ WELCOME SCREEN ============ -->
+    <section class="welcome-screen" id="welcomeScreen">
+      <div class="welcome-inner">
+        <div class="welcome-orb" aria-hidden="true">
+          <svg class="orb orb-lg" viewBox="0 0 48 48" fill="none">
+            <circle class="orb-ring orb-ring-1" cx="24" cy="24" r="20" />
+            <circle class="orb-ring orb-ring-2" cx="24" cy="24" r="14" />
+            <circle class="orb-core" cx="24" cy="24" r="6" />
+          </svg>
+        </div>
+        <h1 class="welcome-title">Welcome to College Assistant AI</h1>
+        <p class="welcome-sub">Ask me about admissions, courses, deadlines, or how to reach the right office. I'm here around the clock.</p>
+
+        <div class="suggestion-grid" id="suggestionGrid">
+          <button class="suggestion-card" data-prompt="What courses do you offer?">
+            <i data-lucide="book-open" aria-hidden="true"></i>
+            <div>
+              <strong>Course information</strong>
+              <span>Explore programs &amp; departments</span>
+            </div>
+          </button>
+          <button class="suggestion-card" data-prompt="How do I apply for admission?">
+            <i data-lucide="graduation-cap" aria-hidden="true"></i>
+            <div>
+              <strong>Admissions</strong>
+              <span>Requirements, deadlines &amp; steps</span>
+            </div>
+          </button>
+          <button class="suggestion-card" data-prompt="How can I contact the admissions office?">
+            <i data-lucide="phone" aria-hidden="true"></i>
+            <div>
+              <strong>Contact details</strong>
+              <span>Reach the right department</span>
+            </div>
+          </button>
+          <button class="suggestion-card" data-prompt="Hi, what can you help me with?">
+            <i data-lucide="sparkles" aria-hidden="true"></i>
+            <div>
+              <strong>Say hello</strong>
+              <span>See what I can do</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MESSAGES ============ -->
+    <section class="chat-area" id="chatArea" aria-live="polite" aria-label="Conversation">
+      <div class="messages" id="messages"></div>
+    </section>
+
+    <!-- ============ COMPOSER ============ -->
+    <footer class="composer-wrap">
+      <div class="composer" id="composer">
+        <button class="icon-btn composer-btn" id="attachBtn" aria-label="Attach file (coming soon)" title="Attachments — coming soon" disabled>
+          <i data-lucide="paperclip" aria-hidden="true"></i>
+        </button>
+
+        <div class="composer-field">
+          <textarea
+            id="composer-input"
+            class="composer-input"
+            rows="1"
+            placeholder="Message College Assistant AI…"
+            aria-label="Type your message"
+            maxlength="1000"
+          ></textarea>
+        </div>
+
+        <button class="icon-btn composer-btn mic-btn" id="micBtn" aria-label="Start voice input" title="Speak your message">
+          <i data-lucide="mic" aria-hidden="true"></i>
+          <span class="mic-pulse" aria-hidden="true"></span>
+        </button>
+
+        <button class="send-btn" id="sendBtn" aria-label="Send message" disabled>
+          <i data-lucide="arrow-up" aria-hidden="true"></i>
+        </button>
+      </div>
+      <p class="composer-footnote">College Assistant AI can make mistakes. Verify important information with the college office.</p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div class="toast-stack" id="toastStack" role="status" aria-live="polite"></div>
+
+<!-- ============ SETTINGS MODAL ============ -->
+<div class="modal-scrim" id="settingsModalScrim" hidden>
+  <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal-head">
+      <h2 id="settingsTitle">Settings</h2>
+      <button class="icon-btn" id="settingsCloseBtn" aria-label="Close settings"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="setting-row">
+        <div>
+          <strong>Appearance</strong>
+          <span>Choose light, dark, or match your system</span>
+        </div>
+        <div class="segmented" role="radiogroup" aria-label="Theme">
+          <button class="segmented-btn" data-theme-choice="light" role="radio" aria-checked="false">Light</button>
+          <button class="segmented-btn" data-theme-choice="dark" role="radio" aria-checked="false">Dark</button>
+          <button class="segmented-btn" data-theme-choice="auto" role="radio" aria-checked="true">Auto</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Spoken responses</strong>
+          <span>Read bot replies aloud automatically</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="autoSpeakToggle" />
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div>
+          <strong>Sound effects</strong>
+          <span>Play subtle sounds for sent &amp; received messages</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="soundToggle" checked />
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="setting-row column">
+        <div>
+          <strong>Connection</strong>
+          <span>Amazon Lex V2 runtime status</span>
+        </div>
+        <div class="connection-detail" id="connectionDetail">Checking configuration…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABOUT MODAL ============ -->
+<div class="modal-scrim" id="aboutModalScrim" hidden>
+  <div class="modal" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal-head">
+      <h2 id="aboutTitle">About College Assistant AI</h2>
+      <button class="icon-btn" id="aboutCloseBtn" aria-label="Close about"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p>College Assistant AI is a conversational assistant built on <strong>Amazon Lex V2</strong>, designed to help students find information about courses, admissions, and contacts quickly and naturally.</p>
+      <ul class="about-list">
+        <li><i data-lucide="shield-check"></i> Secured with temporary Amazon Cognito credentials</li>
+        <li><i data-lucide="mic"></i> Supports voice input and spoken replies</li>
+        <li><i data-lucide="history"></i> Keeps your recent conversations on this device</li>
+        <li><i data-lucide="zap"></i> Fast, static, and hosted entirely on GitHub Pages</li>
+      </ul>
+      <p class="about-version">Version 1.0.0</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCRIPTS ============ -->
+</body>
+</html>

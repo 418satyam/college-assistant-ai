@@ -1,0 +1,18 @@
+{
+  "name": "college-assistant-ai",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.658.1",
+    "@aws-sdk/client-lex-runtime-v2": "^3.658.1"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  }
+}
